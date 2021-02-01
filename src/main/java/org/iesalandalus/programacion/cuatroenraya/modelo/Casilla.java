@@ -35,13 +35,7 @@ public class Casilla {
 	// MÉTODO TOSTRING
 	@Override
 	public String toString() {
-		if (ficha == Ficha.AZUL) {
-			return String.format("%s", "A");
-		}
-		if (ficha == Ficha.VERDE) {
-			return String.format("%s", "V");
-		}
-		return String.format("%s", " ");
+		return String.format("%s", estaOcupada() ? ficha.name().charAt(0) : " ");
+		//Si está ocupada devuelve el caracter de la posición 0 de ficha, si no, un espacio
 	}
-
 }

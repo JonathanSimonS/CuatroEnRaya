@@ -1,5 +1,7 @@
 package org.iesalandalus.programacion.cuatroenraya.vista;
 
+import javax.naming.OperationNotSupportedException;
+
 import org.iesalandalus.programacion.cuatroenraya.modelo.*;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
@@ -14,7 +16,7 @@ public class Consola {
 		String nombre;
 		do {
 			System.out.print("Introduce el nombre del jugador: ");
-			nombre=Entrada.cadena();
+			nombre = Entrada.cadena();
 		} while (nombre.equals("") || nombre == null);
 		return nombre;
 	}
@@ -25,7 +27,11 @@ public class Consola {
 		do {
 			System.out.print("Elige el color de tus fichas (0-Azul, 1-Verde): ");
 			opcion = Entrada.entero();
-		} while (opcion == 2);
+			if (opcion < 0 || opcion > 1) {
+				System.out.println("");
+				System.out.println("Debes introducir un color válido.");
+			}
+		} while (opcion < 0 || opcion > 1);
 
 		if (opcion == 0) {
 			ficha = Ficha.AZUL;
@@ -55,15 +61,17 @@ public class Consola {
 	}
 
 	public static int leerColumna(Jugador jugador) {
-
 		int columna = 7;
 		do {
-			System.out.printf("%s, introduce la columna en la que deseas introducir la ficha (0-6): ",
+			String salida = String.format("%s, introduce la columna en la que deseas introducir la ficha (0-6): ",
 					jugador.getNombre());
+			System.out.println(salida);
 			columna = Entrada.entero();
+			if (columna < 0 || columna > 6) {
+				System.out.println("");
+				System.out.println("Debes introducir una columna válida.");
+			}
 		} while (columna < 0 || columna > 6);
-
 		return columna;
 	}
-
 }

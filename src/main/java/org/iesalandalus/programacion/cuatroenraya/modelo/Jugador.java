@@ -1,5 +1,8 @@
 package org.iesalandalus.programacion.cuatroenraya.modelo;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Jugador {
 
 	// ATRIBUTOS
@@ -29,13 +32,14 @@ public class Jugador {
 	}
 
 	private void setNombre(String nombre) {
+
 		if (nombre == null) {
 			throw new NullPointerException("ERROR: El nombre no puede ser nulo.");
 		}
-		//Aquí no sé exactamente como ponerlo para que sea vacío incluso poniendo 5 espacios por ejemplo
 		if (nombre.equals("") || nombre.equals("   ")) {
 			throw new IllegalArgumentException("ERROR: El nombre no puede estar vacío.");
 		}
+		
 		this.nombre = nombre;
 	}
 
