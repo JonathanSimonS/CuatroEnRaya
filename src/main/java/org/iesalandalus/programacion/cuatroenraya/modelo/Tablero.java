@@ -77,29 +77,32 @@ public class Tablero {
 	}
 
 	private boolean comprobarHorizontal(int fila, Ficha ficha) {
-		int fichasConsecutivas = 0;
-
+		int contador = 0;
 		for (int i = 0; i < COLUMNAS; i++) {
-			if (casillas[fila][i].estaOcupada() && casillas[fila][i].getFicha().equals(ficha)) {
-				fichasConsecutivas++;
+			if (casillas[fila][i].getFicha() == ficha) {
+				contador++;
+				if (objetivoAlcanzado(contador))
+					return true;
 			} else {
-				fichasConsecutivas = 0;
+				contador = 0;
 			}
 		}
-		return objetivoAlcanzado(fichasConsecutivas);
+		return false;
 	}
 
 	private boolean comprobarVertical(int columna, Ficha ficha) {
-		int fichasConsecutivas = 0;
+		int contador = 0;
 
 		for (int i = 0; i < FILAS; i++) {
-			if (casillas[i][columna].estaOcupada() && casillas[i][columna].getFicha().equals(ficha)) {
-				fichasConsecutivas++;
+			if (casillas[i][columna].getFicha() == ficha) {
+				contador++;
+				if (objetivoAlcanzado(contador))
+					return true;
 			} else {
-				fichasConsecutivas = 0;
+				contador = 0;
 			}
 		}
-		return objetivoAlcanzado(fichasConsecutivas);
+		return false;
 	}
 
 	private int menor(int num1, int num2) {
@@ -108,27 +111,28 @@ public class Tablero {
 
 	private boolean comprobarDiagonalNE(int fila, int columna, Ficha ficha) {
 		// Abajo izquierda hasta arriba derecha
-
 		int desplazamientoInicial = menor(fila, columna);
 		int filaInicial = fila - desplazamientoInicial;
 		int columnaInicial = columna - desplazamientoInicial;
-		int fichasConsecutivas = 0;
+		int contador = 0;
 
 		for (int i = filaInicial; i < FILAS; i++) {
 			for (int j = columnaInicial; j < COLUMNAS; j++) {
-
-				if (casillas[i][j].estaOcupada() && casillas[i][j].getFicha().equals(ficha))
-					fichasConsecutivas++;
-				fichasConsecutivas = 0;
-
+				if (casillas[i][j].getFicha() == ficha) {
+					contador++;
+					if (objetivoAlcanzado(contador))
+						return true;
+				} else {
+					contador = 0;
+				}
 			}
 		}
-		return objetivoAlcanzado(fichasConsecutivas);
+		return false;
 	}
 
 	private boolean comprobarDiagonalNO(int fila, int columna, Ficha ficha) {
 		// Abajo derecha hasta arriba izquierda
-		
+
 		int desplazamientoInicial = menor(fila, ((COLUMNAS - 1) - columna));
 		int filaInicial = fila - desplazamientoInicial;
 		int columnaInicial = columna + desplazamientoInicial;
@@ -137,9 +141,13 @@ public class Tablero {
 		for (int i = filaInicial; i < FILAS - 1; i++) {
 			for (int j = columnaInicial; j < 0; j--) {
 
-				if (casillas[i][j].estaOcupada() && casillas[i][j].getFicha().equals(ficha))
+				if (casillas[fila][i].getFicha() == ficha) {
 					fichasConsecutivas++;
-				fichasConsecutivas = 0;
+					if (objetivoAlcanzado(fichasConsecutivas))
+						return true;
+				} else {
+					fichasConsecutivas = 0;
+				}
 
 			}
 		}
@@ -149,10 +157,8 @@ public class Tablero {
 	private boolean comprobarTirada(int fila, int columna) {
 		Ficha ficha = casillas[fila][columna].getFicha();
 
-		if (comprobarHorizontal(fila, ficha) || comprobarVertical(columna, ficha)
-				|| comprobarDiagonalNE(fila, columna, ficha) || comprobarDiagonalNO(fila, columna, ficha))
-			return true;
-		return false;
+		return comprobarHorizontal(fila, ficha) || comprobarVertical(columna, ficha)
+				|| comprobarDiagonalNE(fila, columna, ficha) || comprobarDiagonalNO(fila, columna, ficha);
 	}
 
 	public boolean introducirFicha(int columna, Ficha ficha) throws OperationNotSupportedException {
@@ -178,6 +184,8 @@ public class Tablero {
 			salida.append(i == 0 ? "|\n" : "|\n|");
 		}
 
+		
+		
 		String barraHorizontal = String.format(String.format(" %%0%dd%n", COLUMNAS), 0).replace('0', '-');
 		salida.append(barraHorizontal);
 		return salida.toString();
